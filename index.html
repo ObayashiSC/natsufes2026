@@ -15,6 +15,8 @@
   <script src="https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js"></script>
   <!-- App theme + config -->
   <link rel="stylesheet" href="styles.css">
+  <!-- 追加: 居住地・勤務地セクション用スタイル -->
+  <link rel="stylesheet" href="geo-section.css">
   <script src="config.js"></script>
 </head>
 <body class="page-fade">
@@ -41,6 +43,7 @@
         <div class="nav-item" data-target="attributes"><span class="ic attr">◔</span> Attribute（属性）</div>
         <div class="nav-item" data-target="acquisition"><span class="ic acq">◕</span> Acquisition（流入）</div>
         <div class="nav-item" data-target="engagement"><span class="ic rich">◱</span> Engagement（行動）</div>
+        <div class="nav-item" data-target="geoSection"><span class="ic attr">◧</span> 居住地・勤務地</div>
       </nav>
       <div class="side-foot">
         <span class="dot">●</span> Data source<br>
@@ -124,6 +127,32 @@
         </div>
         <section class="grid-2 dom-attr" id="attrGrid"></section>
 
+        <!-- ===== 追加: 居住地・勤務地 属性セクション（属性の直後・見出しなし）===== -->
+        <span id="geoCount" style="display:none">–</span>
+        <!-- 5パネル（居住サマリ/詳細・徒歩圏・勤務サマリ/詳細）-->
+        <section class="geo-grid dom-attr" id="geoSection">
+          <div class="panel geo-a-resSum">
+            <div class="panel-head"><h3>居住地・サマリ</h3><span class="sub" id="geo_s_resSum">–</span></div>
+            <div class="geo-box small"><canvas id="geo_resSum"></canvas></div>
+          </div>
+          <div class="panel geo-a-resDetail">
+            <div class="panel-head"><h3>居住地・詳細</h3><span class="sub" id="geo_s_resDetail">–</span></div>
+            <div class="geo-box tall"><canvas id="geo_resDetail"></canvas></div>
+          </div>
+          <div class="panel geo-a-walk">
+            <div class="panel-head"><h3>徒歩圏 or 徒歩圏外</h3><span class="sub" id="geo_s_walk">–</span></div>
+            <div class="geo-box small"><canvas id="geo_walk"></canvas></div>
+          </div>
+          <div class="panel geo-a-wrkSum">
+            <div class="panel-head"><h3>勤務地・サマリ</h3><span class="sub" id="geo_s_wrkSum">–</span></div>
+            <div class="geo-box small"><canvas id="geo_wrkSum"></canvas></div>
+          </div>
+          <div class="panel geo-a-wrkDetail">
+            <div class="panel-head"><h3>勤務地・詳細</h3><span class="sub" id="geo_s_wrkDetail">–</span></div>
+            <div class="geo-box tall"><canvas id="geo_wrkDetail"></canvas></div>
+          </div>
+        </section>
+
         <!-- ===== Domain 2: Acquisition (緑) ===== -->
         <div class="section-label dom-acq" id="acquisition" style="flex-wrap:wrap">
           <!-- 左: 流入経路の大見出し（左チャートの上）-->
@@ -178,5 +207,7 @@
   </script>
   <script src="dashboard-core.js"></script>
   <script src="app.js"></script>
+  <!-- 追加: 居住地・勤務地セクション（自己完結・既存を変更しない） -->
+  <script src="geo-section.js"></script>
 </body>
 </html>
