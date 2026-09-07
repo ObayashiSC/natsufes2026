@@ -1,0 +1,140 @@
+/* =========================================================================
+ *  filters.css — グローバルフィルター（左サイドバー配置版）
+ *  ------------------------------------------------------------------------
+ *  ★仕様:
+ *   ・フィルターは左サイドバー内（Analyticsメニューの下・Data sourceの上）に配置。
+ *   ・期間フィルター（.slider-panel）もサイドバー内へ移動。
+ *   ・日付以外（性別/年代/居住地/勤務地）は複数選択できるプルダウン（.gf-dd）。
+ *   ・期間スライダー上部のツールチップ（.noUi-tooltip）は枠で見切れるため非表示。
+ *     下段の readout（2026-07-28 → 2026-09-05）で範囲を示す。
+ *  既存 styles.css の変数（--panel/--stroke/--attr 等）を利用。
+ * ======================================================================= */
+
+/* サイドバーはフィルター追加で縦に伸びるため、縦スクロール可に */
+.sidebar { overflow-y: auto; }
+
+/* ---- フィルターパネル本体（サイドバー内）---- */
+.side-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 4px 0 6px;
+  padding-top: 14px;
+  border-top: 2px solid var(--attr-line);
+}
+
+/* ---- ヘッダ行 ---- */
+.side-filter .gf-head { display: flex; align-items: center; gap: 8px; }
+.side-filter .gf-title { font-family: var(--font-display); font-weight: 700; font-size: 13px; }
+.side-filter .gf-clear {
+  margin-left: auto; border: 1px solid var(--stroke); background: #fff; color: var(--muted);
+  font-size: 11px; padding: 4px 10px; cursor: pointer; border-radius: 0; font-family: var(--font);
+}
+.side-filter .gf-clear:hover { background: var(--bg); color: var(--text); }
+
+/* ---- 件数カウンタ ---- */
+.side-filter .gf-count {
+  font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums;
+  background: var(--bg); padding: 4px 9px; border-radius: 0; align-self: flex-start;
+}
+
+/* ---- 期間フィルター（.slider-panel をここへ移動・縦積みに）---- */
+.side-filter .gf-period { margin: 0; }
+.side-filter .slider-panel.gf-period-panel {
+  margin: 0;
+  padding: 0 0 12px;
+  background: transparent;
+  box-shadow: none;
+  border-bottom: 1px dashed var(--stroke);
+  display: flex;
+  flex-direction: column;         /* 横並び→縦積み（狭幅対応）*/
+  align-items: stretch;
+  gap: 10px;
+}
+.side-filter .slider-panel .s-title { font-size: 12px; }
+.side-filter .slider-panel .slider-wrap {
+  min-width: 0;                   /* 320px の下限を解除して収める */
+  width: 100%;
+  padding: 6px 6px 2px;           /* ツールチップ非表示にしたので上余白を縮小 */
+}
+.side-filter .slider-panel .range-readout {
+  white-space: normal;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* ---- 上部ツールチップは枠内で見切れるため非表示（両画面共通）----
+ *  noUiSlider 標準の .noUi-tooltip を主対象。念のためカスタム tooltip も抑止。 */
+.side-filter .slider-panel .noUi-tooltip,
+.side-filter .slider-panel .slider-wrap [class*="tooltip"] {
+  display: none !important;
+}
+
+/* ---- プルダウン群 ---- */
+.side-filter .gf-dds { display: flex; flex-direction: column; gap: 8px; }
+
+.gf-dd { position: relative; }
+
+/* プルダウンの見えるボタン */
+.gf-dd-btn {
+  width: 100%;
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--stroke); background: #fff;
+  font-family: var(--font); font-size: 12px; color: var(--text);
+  cursor: pointer; border-radius: 0; text-align: left; transition: .12s;
+}
+.gf-dd-btn:hover { border-color: var(--attr); }
+.gf-dd.open .gf-dd-btn { border-color: var(--attr); box-shadow: 0 0 0 2px var(--attr-soft); }
+.gf-dd.has .gf-dd-btn { border-color: var(--attr); background: var(--attr-soft); }
+
+.gf-dd-cap { font-weight: 700; white-space: nowrap; }
+.gf-dd-sum {
+  margin-left: auto; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 110px; text-align: right;
+}
+.gf-dd.has .gf-dd-sum { color: var(--attr); font-weight: 600; }
+.gf-dd-arrow { color: var(--dim); font-size: 10px; transition: transform .15s; flex: none; }
+.gf-dd.open .gf-dd-arrow { transform: rotate(180deg); }
+
+/* 開いた選択肢メニュー（複数選択チェックボックス）*/
+.gf-dd-pop {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 90;
+  background: #fff; border: 1px solid var(--stroke);
+  box-shadow: 0 10px 24px rgba(16, 24, 40, .16);
+  max-height: 260px; overflow-y: auto; padding: 4px 0;
+}
+.gf-dd-opt {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 11px; font-size: 12px; color: var(--text);
+  cursor: pointer; user-select: none;
+}
+.gf-dd-opt:hover { background: var(--bg); }
+.gf-dd-opt input { accent-color: var(--attr); width: 14px; height: 14px; flex: none; }
+.gf-dd-opt span { line-height: 1.35; }
+
+/* ---- 選択中サマリ（全体）---- */
+.side-filter .gf-selected {
+  font-size: 11px; color: var(--muted); line-height: 1.9;
+  border-top: 1px dashed var(--stroke); padding-top: 10px;
+}
+.side-filter .gf-selected b { color: var(--text); }
+.side-filter .gf-sep { color: var(--dim); margin: 0 4px; }
+.side-filter .gf-seltag {
+  display: inline-block; background: var(--attr-soft); color: var(--attr); border: 1px solid var(--attr-line);
+  border-radius: 999px; padding: 1px 8px; margin: 2px 3px 2px 0; font-size: 10.5px;
+}
+
+/* ---- ShopDrop: 期間フィルター単独配置時は末尾の区切り線を消す ---- */
+#sdPeriodBar .slider-panel.gf-period-panel {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* =========================================================================
+ *  モバイル（サイドバー非表示時）: フィルターを本文上部に横並び表示
+ * ======================================================================= */
+@media (max-width: 760px) {
+  .sidebar { overflow-y: visible; }
+}
